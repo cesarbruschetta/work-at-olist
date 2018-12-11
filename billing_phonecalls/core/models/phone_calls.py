@@ -1,18 +1,28 @@
 """ module to model of call and callEvent """
 from django.db import models
 from django.db.models.signals import post_save
-from django.core.validators import RegexValidator, MaxLengthValidator
+from django.core.validators import MaxLengthValidator
 from django.dispatch import receiver
 
+from billing_phonecalls.core.utils import validate_phone
 from .billing import Bill
+
+
+class CallManager(models.Manager):
+    """ manager class to Call model """
+
+    def get_telephone_bill(self, telephone, year, month):
+        """ return list of calls by period  """
+        result = self.filter(source=telephone,
+                             callevent__type_call="end",
+                             callevent__timestamp__month=month,
+                             callevent__timestamp__year=year)
+
+        return result
 
 
 class Call(models.Model):
     """ model of calls """
-
-    validate_phone = RegexValidator(
-        regex=r'^(([1-9]{2})(?:[2-8]|9[1-9])[0-9]{7})$',
-        message='Invalid phone number.')
 
     call_id = models.IntegerField("Call Identifier", default=0)
     source = models.CharField("Source Phone", max_length=15,
@@ -21,6 +31,8 @@ class Call(models.Model):
     destination = models.CharField("Destination Phone", max_length=15,
                                    validators=[validate_phone,
                                                MaxLengthValidator(15)])
+
+    objects = CallManager()
 
     def __str__(self):
         """ Str class """
@@ -52,11 +64,17 @@ class Call(models.Model):
         return None
 
     @property
+    def format_duration(self):
+        """ retunr duration of call in string format """
+        total_sec = int(self.duration.total_seconds())
+        hours, rem = divmod(total_sec, 60 * 60)
+        minutes, seconds = divmod(rem, 60)
+        return '%sh%sm%ss' % (hours, minutes, seconds)
+
+    @property
     def price(self):
         """ propert to return price of call """
-        if self.bill:
-            return self.bill.price
-        return 0.0
+        return self.bill.price
 
     def valid_type(self, type_call):
         """ method to validate type to call """

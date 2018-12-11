@@ -38,14 +38,6 @@ class Bill(models.Model):
             self.call, self.price)
 
     @property
-    def duration(self):
-        """ retunr duration of call  """
-        total_sec = int(self.call.duration.total_seconds())
-        hours, rem = divmod(total_sec, 60 * 60)
-        minutes, seconds = divmod(rem, 60)
-        return '%sh%sm%ss' % (hours, minutes, seconds)
-
-    @property
     def total_minutes(self):
         """ Return total minuts of call """
         minutes, _ = divmod(self.call.duration.total_seconds(), 60)

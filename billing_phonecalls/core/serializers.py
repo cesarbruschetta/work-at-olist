@@ -55,3 +55,31 @@ class CallSerializer(serializers.ModelSerializer):
             'source': {'required': False},
             'destination': {'required': False}
         }
+
+
+class CallBillingSerializer(serializers.ModelSerializer):
+    """ Class to Serializer model call billing """
+
+    call_start_date = serializers.SerializerMethodField()
+    call_start_time = serializers.SerializerMethodField()
+
+    def get_call_start_date(self, obj):
+        """ return date to start date of call """
+        return obj.start_time.date()
+
+    def get_call_start_time(self, obj):
+        """ return time to start date of call """
+        return obj.start_time.time()
+
+    class Meta:
+        """ Meta """
+        model = Call
+        fields = ('destination', 'call_start_date', 'call_start_time', 'format_duration', 'price')
+
+
+class TelephoneBillSerializer(serializers.Serializer):
+    """ Class to Serializer model telephone billing """
+
+    telephone = serializers.CharField(read_only=True)
+    period = serializers.CharField(read_only=True)
+    calls = CallBillingSerializer(read_only=True, many=True)

@@ -6,5 +6,7 @@
 *.tmproj
 *.log
 .env
+.coverage
 tmp
 db*
+htmlcov/
