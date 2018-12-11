@@ -34,7 +34,7 @@ def valid_period(year, month):
     today = datetime.today()
 
     if year and month and\
-            today.year == year and today.month == month:
+            today.year == int(year) and today.month == int(month):
         return False
 
     return True

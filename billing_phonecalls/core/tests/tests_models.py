@@ -3,6 +3,7 @@ import random
 from decimal import Decimal
 from datetime import datetime, timedelta
 from django.test import TestCase
+
 from billing_phonecalls.core.models.phone_calls import Call, CallEvent
 from billing_phonecalls.core.utils import generate_numbers
 
