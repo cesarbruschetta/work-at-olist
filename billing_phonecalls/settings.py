@@ -132,8 +132,11 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=billing_phonecalls.core',
+    '--cover-package=billing_phonecalls',
 ]
+
+DOCS_ROOT = os.path.join(BASE_DIR, 'doc_site')
+DOCS_URL = '/docs/'
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())

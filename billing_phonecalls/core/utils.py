@@ -6,9 +6,9 @@ from django.core.validators import RegexValidator
 
 def generate_numbers(size):
     """ generate numbers by size """
-    
+
     return ''.join(
-        [str(random.randint(1,9)) for x in range(2)]
+        [str(random.randint(1, 9)) for x in range(2)]
     )
 
 

@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
 
-# from billing_phonecalls.core.views import HomePage
 
 urlpatterns = [
-    # path('', HomePage.as_view(), name='home'),
+    path('', RedirectView.as_view(url='/docs/index.html', permanent=False), name='index'),
     path('admin/', admin.site.urls),
     path('api/', include('billing_phonecalls.core.urls')),
-]
+    path('docs/', RedirectView.as_view(url='/docs/index.html', permanent=False), name='index-doc'),
+] + static(settings.DOCS_URL, document_root=settings.DOCS_ROOT)
