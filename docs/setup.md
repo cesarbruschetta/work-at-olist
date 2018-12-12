@@ -28,6 +28,12 @@ $ ../bin/python ./manage.py loaddata data_users.json
 $ ../bin/python ./manage.py createsuperuser
 ```
 
+## Load default data to database
+
+```bash
+$ ../bin/python ./manage.py loaddata data_calls
+```
+
 ## Run Development Server
 
 ```bash

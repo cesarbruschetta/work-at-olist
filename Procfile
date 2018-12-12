@@ -1,1 +1,1 @@
-web: gunicorn challenge_cadastro.wsgi: application
+web: gunicorn billing_phonecalls.wsgi: application
